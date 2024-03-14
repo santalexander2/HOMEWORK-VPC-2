@@ -76,12 +76,12 @@ d. Add a route to the Internet Gateway (IG).
 5. Create NAT Gateway. 
 a. Navigate to the left-side bar and click on "NAT Gateway" then select "Create NAT Gateway".
 b. In the create window: 
-                        - Enter the name for the NAT gateway.
-                        - Select relevant Public Subnet to place the NAT gateway. 
-                        - Keep the connectivity type "Public"
-                        - Allocate Elastic (Static IP). If it leave as dynamic IP, upon the reboot the VPC Public IP will be changed. 
+                        - Enter a name for the NAT gateway.
+                        - Select the relevant Public Subnet to place the NAT gateway. 
+                        - Keep the connectivity type as "Public"
+                        - Allocate Elastic (Static IP). If left as dynamic, the VPC's public IP will change upon reboot.
                         - Create NAT gateway
-Comment: NAT gateway is the instance that have to be placed in the Public subnet for efficient and secure outbound internet access from private subnets. Also it provides the necessary public IP address and routing configuration for proper functionality. 
+Comment: NAT gateway is the instance that have to be placed in the Public subnet for efficient and secure outbound internet access from private subnets. It also provides the necessary public IP address and routing configuration for proper functionality. 
 
 
 
@@ -102,7 +102,7 @@ d. Add a route to the NAT gateway.
 7. Deletion of the NAT gateway. 
 
 a. Navigate to the left-side bar and click on "NAT Gateway" then select needed NAT Gateway.
-b. under "Actions droplist" select Delete NAT gateway. Confirm deletion. 
+b. In the "Actions" dropdown menu, select "Delete NAT gateway." Confirm the deletion.
 c. Navigate to the left-side bar and click on "Elastic IPs" then select needed Elastic IP.
-d. under "Actions droplist" select Release Elastic IP addresses. Confirm deletion. 
+d. In the "Actions" dropdown menu, select "Release Elastic IP addresses." Confirm the deletion.
 
