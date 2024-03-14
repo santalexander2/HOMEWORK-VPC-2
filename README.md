@@ -81,11 +81,12 @@ b. In the create window:
                         - Keep the connectivity type as "Public"
                         - Allocate Elastic (Static IP). If left as dynamic, the VPC's public IP will change upon reboot.
                         - Create NAT gateway
-Comment: NAT gateway is the instance that have to be placed in the Public subnet for efficient and secure outbound internet access from private subnets. It also provides the necessary public IP address and routing configuration for proper functionality. 
+Comment 1: NAT gateway is the instance that have to be placed in the Public subnet for efficient and secure outbound internet access from private subnets. It also provides the necessary public IP address and routing configuration for proper functionality.
+Comment 2: For redundancy purposes, it's advisable to create a second NAT gateway in another Availability Zone (AZ), typically within a Private subnet. In the event that the first AZ becomes unavailable, the second NAT gateway can seamlessly serve our applications. To set up the second NAT gateway, we need to create a separate (second) Route table, among other configurations, to ensure proper redundancy and failover mechanisms are in place.
 
 
 
-6. Private Subnets Associationts to NAT gateway. Routing. 
+7. Private Subnets Associationts to NAT gateway. Routing. 
 a. Erlier  the route table (RT) was created, associate Private subnets with it.
                     - Choose the RT, click on "Subnet associations," and then click "Edit subnet association."
                     - Select the necessary private subnets for this RT.
@@ -99,7 +100,7 @@ d. Add a route to the NAT gateway.
 
 
 
-7. Deletion of the NAT gateway. 
+8. Deletion of the NAT gateway. 
 
 a. Navigate to the left-side bar and click on "NAT Gateway" then select needed NAT Gateway.
 b. In the "Actions" dropdown menu, select "Delete NAT gateway." Confirm the deletion.
