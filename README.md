@@ -15,7 +15,6 @@ Navigate to the VPC service and select the appropriate region
 
 a. On the left-side bar, click "Your VPCs," then choose "Create VPC."
 b. In the creation window:
-
                     - Choose "VPC only."
                     - Select "VPC only."
                     - Provide a unique name for the VPC within your AWS account.
@@ -24,6 +23,8 @@ b. In the creation window:
                     - Leave the Tenancy as "default."
                     - Optionally, add tags for better organization.
 
+
+                    
 
 
 2. To create subnets in AWS, follow these steps:
