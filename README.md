@@ -25,8 +25,6 @@ b. In the creation window:
 
 
                     
-
-
 2. To create subnets in AWS, follow these steps:
 
 a. Go to the left-side bar and click on "Subnets," then click "Create Subnets."
@@ -46,6 +44,7 @@ Following these steps will allow you to create multiple subnets with different I
 
 
 3. Creating Internet Gateway (IG)
+
 a. Go to the left-side bar and click on "Internet Gateway," then click "Internet Gateway"
 b. In the create window:
                         - type the IG name
@@ -55,8 +54,8 @@ c.  Click on "Attach to VPC" in the green window or navigate to the "Actions" se
 
 
 
-4. Create route table. Subnet Association. Routing. 
-a. Navigate to the left-side bar and click on "Route tables," then select "Create Route tables" (RT).
+4. Create route table for Public Subnets. Subnet Association. Routing. 
+a. Navigate to the left-side bar and click on "Route tables" then select "Create Route tables" (RT).
 Comment: Create one route table for Public Subnets and another one for Private subnets. 
 b. In the create window:
                         - Enter the name for the route table (RT).
@@ -71,4 +70,39 @@ d. Add a route to the Internet Gateway (IG).
                         - In the "Destination" column, select "0.0.0.0/0" (which means all).
                         - In the "Target" column, select "Internet Gateway" and choose the recently created IG.
                         - Save the changes.
+
+
+
+5. Create NAT Gateway. 
+a. Navigate to the left-side bar and click on "NAT Gateway" then select "Create NAT Gateway".
+b. In the create window: 
+                        - Enter the name for the NAT gateway.
+                        - Select relevant Public Subnet to place the NAT gateway. 
+                        - Keep the connectivity type "Public"
+                        - Allocate Elastic (Static IP). If it leave as dynamic IP, upon the reboot the VPC Public IP will be changed. 
+                        - Create NAT gateway
+Comment: NAT gateway is the instance that have to be placed in the Public subnet for efficient and secure outbound internet access from private subnets. Also it provides the necessary public IP address and routing configuration for proper functionality. 
+
+
+
+6. Private Subnets Associationts to NAT gateway. Routing. 
+a. Erlier  the route table (RT) was created, associate Private subnets with it.
+                    - Choose the RT, click on "Subnet associations," and then click "Edit subnet association."
+                    - Select the necessary private subnets for this RT.
+                    - Save the changes.
+d. Add a route to the NAT gateway.
+                        - Click on "Routes," then select "Edit routes."
+                        - In the new window, click "Add route."
+                        - In the "Destination" column, select "0.0.0.0/0" (which means all).
+                        - In the "Target" column, select "NAT gateway" and choose the recently created NAT gateaway.
+                        - Save the changes.
+
+
+
+7. Deletion of the NAT gateway. 
+
+a. Navigate to the left-side bar and click on "NAT Gateway" then select needed NAT Gateway.
+b. under "Actions droplist" select Delete NAT gateway. Confirm deletion. 
+c. Navigate to the left-side bar and click on "Elastic IPs" then select needed Elastic IP.
+d. under "Actions droplist" select Release Elastic IP addresses. Confirm deletion. 
 
