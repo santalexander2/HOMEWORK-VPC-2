@@ -82,7 +82,7 @@ b. In the create window:
                         - Allocate Elastic (Static IP). If left as dynamic, the VPC's public IP will change upon reboot.
                         - Create NAT gateway
 Comment 1: NAT gateway is the instance that have to be placed in the Public subnet for efficient and secure outbound internet access from private subnets. It also provides the necessary public IP address and routing configuration for proper functionality.
-Comment 2: For redundancy purposes, it's advisable to create a second NAT gateway in another Availability Zone (AZ), typically within a Private subnet. In the event that the first AZ becomes unavailable, the second NAT gateway can seamlessly serve our applications. To set up the second NAT gateway, we need to create a separate (second) Route table, among other configurations, to ensure proper redundancy and failover mechanisms are in place.
+Comment 2: For redundancy purposes, it's advisable to create a second NAT gateway in another Availability Zone (AZ), typically within a Public subnet. In the event that the first AZ becomes unavailable, the second NAT gateway can seamlessly serve our applications. To set up the second NAT gateway, we need to create a separate (second) Route table, among other configurations, to ensure proper redundancy and failover mechanisms are in place.
 
 
 
