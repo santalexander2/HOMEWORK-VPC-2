@@ -12,6 +12,7 @@ Log in to your AWS account as an IAM user, using your Account ID, login credenti
 Navigate to the VPC service and select the appropriate region
 
 1. VPC creation:
+
 a. On the left-side bar, click "Your VPCs," then choose "Create VPC."
 b. In the creation window:
 
@@ -23,9 +24,11 @@ b. In the creation window:
                     - Leave the Tenancy as "default."
                     - Optionally, add tags for better organization.
 
+
+
 2. To create subnets in AWS, follow these steps:
 
-a. Go to the left-side bar and click on "Subnets," then select "Create Subnets."
+a. Go to the left-side bar and click on "Subnets," then click "Create Subnets."
 b. Choose the relevant VPC where you want to create the subnets.
 c. In the create window:
                         - Type the subnet name.
@@ -37,5 +40,34 @@ c. In the create window:
                 In this operation, create 4 subnets: 2 private and 2 public.
                 Private subnets should reserve more IPs, for example, "10.0.0.0/20" for 4096 IPs.
         Comment: By default, all subnets are private. To make them public, associate and route the subnets to an Internet Gateway (IG). Once associated and routed, the subnets will become public.
-
 Following these steps will allow you to create multiple subnets with different IP ranges and designate them as either private or public as needed within your AWS VPC.
+
+
+
+3. Creating Internet Gateway (IG)
+a. Go to the left-side bar and click on "Internet Gateway," then click "Internet Gateway"
+b. In the create window:
+                        - type the IG name
+                        - Optionally, add tags.
+c.  Click on "Attach to VPC" in the green window or navigate to the "Actions" section. Then, select the relevant VPC. It will display the only VPC that has no attached Internet Gateway (IG). 
+
+
+
+
+4. Create route table. Subnet Association. Routing. 
+a. Navigate to the left-side bar and click on "Route tables," then select "Create Route tables" (RT).
+Comment: Create one route table for Public Subnets and another one for Private subnets. 
+b. In the create window:
+                        - Enter the name for the route table (RT).
+                        - Select the relevant VPC.
+c. Once the route table (RT) is created, associate Public subnets with it.
+                    - Choose the RT, click on "Subnet associations," and then click "Edit subnet association."
+                    - Select the necessary public subnets for this RT (since it's for Public use).
+                    - Save the changes.
+d. Add a route to the Internet Gateway (IG).
+                        - Click on "Routes," then select "Edit routes."
+                        - In the new window, click "Add route."
+                        - In the "Destination" column, select "0.0.0.0/0" (which means all).
+                        - In the "Target" column, select "Internet Gateway" and choose the recently created IG.
+                        - Save the changes.
+
