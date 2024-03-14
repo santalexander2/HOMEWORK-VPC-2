@@ -105,4 +105,3 @@ a. Navigate to the left-side bar and click on "NAT Gateway" then select needed N
 b. In the "Actions" dropdown menu, select "Delete NAT gateway." Confirm the deletion.
 c. Navigate to the left-side bar and click on "Elastic IPs" then select needed Elastic IP.
 d. In the "Actions" dropdown menu, select "Release Elastic IP addresses." Confirm the deletion.
-
