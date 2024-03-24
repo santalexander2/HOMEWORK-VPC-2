@@ -1,0 +1,19 @@
+Connect VPC to S3 bucket using VPC Gateway Endpoint
+
+1. In the VPC dashboard click on "Endpoints" in the left-hand navigation pane
+2. Click on the "Create Endpoint" button
+    - Type Endpoint name
+    - Select service category as "AWS services"
+    - Choose "type = Gateway" as the endpoint type.
+    - Select "com.amazonaws.REGION.s3" (replace REGION with the region where your S3 bucket resides) as the service name
+    - Choose relevant VPC from the "VPC" dropdown list
+    - Choose Route table (it could be already existed public RT)
+    - Optionally, configure the endpoint policy to restrict access to specific S3 buckets by clicking "Custom" and use policy generator tool. Or leave it as "Full Access"
+    - Tags are optionally. 
+    - Click on the "Create endpoint" button to create the VPC endpoint.
+
+3. Check the selected RT, it should be automatically added new route with destination as "S3 buckets" and target "ID of the Endpoints" 
+4. To check connectivity between an EC2 instance in your VPC and an S3 bucket/s using a VPC endpoint, 
+    - ensure that the instance has necessary IAM permissions to access S3
+    - Run AWS CLI commands to access an S3 bucket. For example, to list the contents of an S3 bucket aws s3 ls s3://backet name/
+                or get an object from S3 bucket by command aws s3 cp s3://path-to-bucket/ /destination/
