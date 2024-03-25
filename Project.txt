@@ -53,3 +53,28 @@ Download files from the S3 bucket to the EC2 Instance
 to check downloaded file run the command "ls" 
 
 
+TASK 3
+Create an autoscaling group "SyncService-ASG" with a dynamic scaling policy to have:
+min: 1 instance, desired: 1 instance, max: 4 instances
+Integrate AutoScaling group with "SyncService" Load balancer.
+
+1. Create Load Balancer (hereandafter as "LB")
+    - Go to EC2, go to Load Balancers on the left-hand pane, click on "Create Load Balancer"
+    - Choose "Application Load Balancer" type
+    - Provide a name to LB
+    - Choose "Internet-facing" scheme (An internet-facing load balancer routes requests from clients over the internet to targets. Requires a public subnet)
+    - Ip address type leave as "IPv4"
+    - Choose a required VPC from the droplist in the Networl mapping section 
+    - pick both AZs and both Public Subnets
+    - Choose a specially Security group for Load Balancer from the droplist (you can create one in advance. In inbound rules open HTTP and HTTPS ports fot this Sec.Group)
+    - In the "Listeners and Routing" section click on hypelink to create a terget group. Or you can select from the droplist that has been already created and not assign to other LB.
+2. Create a target group
+    - Target type "Instances"
+    - Type Target group name
+    - scroll down to Health checks and type "/index.html (this step is optional)
+    - Click "next"
+    - DO NOT pick and include as pending any existed EC2. click on "Create target group"
+1. Go back to Load Balancer creating window. 
+    - Select just created Target group (refresh the droplist)
+    - Scroll down and click "Create load balancer" button
+    
