@@ -39,7 +39,7 @@ Download files from the S3 bucket to the EC2 Instance
     - Click "Policy generator" button
     - From the Type of Policy droplist choose "S3 Bucket Policy"
     - Effect leave as "Allow"
-    - For Principal line go to relevant IAM and grap the ARN of the role. Paste them. 
+    - For Principal line go to relevant IAM and grab the ARN of the role. Paste them. 
     - For Actions lane choose from droplist "GetObject" 
     - for ARN lane grep and paste bucket's ARN. 
     - Click on "Add statement" button 
@@ -59,22 +59,74 @@ min: 1 instance, desired: 1 instance, max: 4 instances
 Integrate AutoScaling group with "SyncService" Load balancer.
 
 1. Create Load Balancer (hereandafter as "LB")
-    - Go to EC2, go to Load Balancers on the left-hand pane, click on "Create Load Balancer"
+    - Go to EC2, and then click on Load Balancer on the left-hand pane, click on "Create Load Balancer"
     - Choose "Application Load Balancer" type
     - Provide a name to LB
     - Choose "Internet-facing" scheme (An internet-facing load balancer routes requests from clients over the internet to targets. Requires a public subnet)
     - Ip address type leave as "IPv4"
-    - Choose a required VPC from the droplist in the Networl mapping section 
+    - Choose a required VPC from the droplist in the Network mapping section 
     - pick both AZs and both Public Subnets
     - Choose a specially Security group for Load Balancer from the droplist (you can create one in advance. In inbound rules open HTTP and HTTPS ports fot this Sec.Group)
     - In the "Listeners and Routing" section click on hypelink to create a terget group. Or you can select from the droplist that has been already created and not assign to other LB.
 2. Create a target group
     - Target type "Instances"
     - Type Target group name
-    - scroll down to Health checks and type "/index.html (this step is optional)
+    - scroll down to Health checks and type "/index.html" (this step is optional)
     - Click "next"
     - DO NOT pick and include as pending any existed EC2. click on "Create target group"
 1. Go back to Load Balancer creating window. 
     - Select just created Target group (refresh the droplist)
     - Scroll down and click "Create load balancer" button
+
+3. Create an Auto Scaling group
+    - Scroll down the left-hand pane and click on Auto Scaling group (as "ASG")
+    - Click on "Create ASG"
+    - Type the name of ASG 
+    - Click on hyperlink "Create a launch template" if you do not have any templates. 
+4. Create a launch Template
+    - Type a name of a template
+    - Scroll sown and select "Amazon Linux" AMI
+    - Choose "t2.micro" instance type
+    - Select a key
+    - DO NOT SELECT ANY subnet
+    - Create a new Security group: 
+        - provide a description 
+        - Add security group role: 1. Type HTTP, for sourse box select a SECURITY GROUP that has been provided to LOAD BALANCER. Add second type for HTTPS and same source. 
+        - in Advanced details add bootstrap (below) for User data box. 
+#!/bin/bash
+# Update the system packages
+yum update -y
+
+# Install Apache HTTP server
+yum install -y httpd
+
+# Start the Apache service
+systemctl start httpd
+
+# Enable Apache to start on boot
+systemctl enable httpd
+
+# Create a basic HTML file to be served
+echo "<html><head><title>  </title></head><body><h1> FILE SYNCHRONIZING SERVICE at $(hostname -f)</h1></body></html>" > /var/www/html/index.html
+
+# Set permissions for the HTML file
+chmod 644 /var/www/html/index.html
+        - Create launch template
     
+3. Continue creting the ASG
+    - Refresh for selecting launch template, and select just created one. 
+    - On the Step 2: Select a VPC and AZs and Public Subnets. Click the "Next button"
+    - On the Step 3: Select "Attach to an existing load balancer". and select "Choose from your load balancer target groups"
+    - Select erlier created Target group. Scroll down and click "Next"
+    - On the Step 4: Indicate for Disired group size - 1, for Min - 1, for Max 4. 
+    - In the Automatic scaling section choose "Target tracking scaling policy" and indicate relevant Target value and Instance warmup. Scroll down and click "Next"
+    - Leave Step 5 and 6 as unchangeble. 
+    - Review the ASG summary and Click "Create ASG"
+
+To check the completness of the operation go back Load Balancer and grab the DNS name and paste to browser. 
+Correct data should appear as "FILE SYNCHRONIZING SERVICE at ip-10-0-0-213.us-west-1.compute.internal"
+
+
+
+
+
