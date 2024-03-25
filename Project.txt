@@ -1,3 +1,4 @@
+TASK 1
 Connect VPC to S3 bucket using VPC Gateway Endpoint
 
 1. In the VPC dashboard click on "Endpoints" in the left-hand navigation pane
@@ -17,3 +18,38 @@ Connect VPC to S3 bucket using VPC Gateway Endpoint
     - ensure that the instance has necessary IAM permissions to access S3
     - Run AWS CLI commands to access an S3 bucket. For example, to list the contents of an S3 bucket aws s3 ls s3://backet name/
                 or get an object from S3 bucket by command aws s3 cp s3://path-to-bucket/ /destination/
+
+
+TASK 2
+Download files from the S3 bucket to the EC2 Instance
+1. Upon creating bucket and folder in them, uploading file. Creating regular EC2 instance. 
+2. Creating an IAM role
+    - In the IAM dashboard click on "Roles" in the left-hand navigation pane
+    - Click on the "Create role" button
+    - Select "AWS service" as a Trusted entity type
+    - Choose EC2 from the "service case" dropdown list
+    - At the step 2: search "AmazonS3ReadOnlyAccess" policy, pick them and click "next"
+    - At the step 3: Name the Role, Save it. 
+3. Go to created EC2. 
+    - Pick them, click on the "Actions" button, go to "Security" section and click on "Modify role"
+    - Choose just created IAM role from droplist. Update IAM role. 
+4. Go to S3 bucket. 
+    - On the top pane got to permissions section
+    - Scroll down to Bucket policy and click "edit" button. 
+    - Click "Policy generator" button
+    - From the Type of Policy droplist choose "S3 Bucket Policy"
+    - Effect leave as "Allow"
+    - For Principal line go to relevant IAM and grap the ARN of the role. Paste them. 
+    - For Actions lane choose from droplist "GetObject" 
+    - for ARN lane grep and paste bucket's ARN. 
+    - Click on "Add statement" button 
+    - Click on "Generate Policy" button. Copy all generated policy. 
+    - Paste the policy, and add "/*" to end bucket's ARN at the Resourse line. (It means that EC2 will have the all objects in the bucket)
+    - Save changes. 
+5. Connect to EC2.
+    - Go to file in the backet, pick them and click on "Copy S3 URI"
+    - run the command "aws s3 cp s3://bucket3120/file-sync-service/greyhound_-_dog.jpeg ." the link in this command is copied file URI. "." means destionation to copy the file (current directory)
+    - Correct output is "download: s3://bucket3120/file-sync-service/greyhound_-_dog.jpeg to ./greyhound_-_dog.jpeg"
+to check downloaded file run the command "ls" 
+
+
