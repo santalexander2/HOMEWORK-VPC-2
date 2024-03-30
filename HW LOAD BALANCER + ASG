@@ -31,8 +31,18 @@ for the 2nd EC2 instance repeat the same steps and user other User data "... APP
 
 
 
+2. Create HW target group. Include all instances in it.  
+                - Navigate to EC2 service => Target Groups => Create Target Group (TG)               
+                - Choose "Instances" as a target type
+                - Type a name of the TG
+                - Scroll down => click "Next"
+                - Pick two earlier created instances and click to "Include as pending below"
+                - click "Create target group"
 
-2. Create HW Load Balancer in us-east-1
+
+
+
+3. Create HW Load Balancer in us-east-1
    Create Security for Load Balancer and add two INBOUND RULES for HTTP and HTTPS ports to receive traffic from "anywhere"
 
     - Navigate to EC2 service => Load Balancers => Create Load Balancer (LB)
@@ -41,15 +51,39 @@ for the 2nd EC2 instance repeat the same steps and user other User data "... APP
     - Pick at least two AZs and relevant subnets
     - Apply earlier created Security Group 
     - In the "Listeners and routing" create new Target group. 
-                
-Create New Target group (TG)
-                - Choose "Instances" as a target type
-                - Type a name of the TG
-                - Scroll down => click "Next"
-                - Pick two earlier created instances and click to "Include as pending below"
-                - click "Create target group"
-Go Back to creating LB
-    - Refresh and select just created TG
+    - Select earlier created TG
     - Click on "Create load balancer"
 
 
+
+4. Create Autoscaling group with dynamic scaling to create instances at 80% CPU. 
+    - Navigate to EC2 service => Auto Scaling Groups => Create Auto Scaling Groups (ASG)
+    - Type a name of the ASG
+    - Click on create new Template
+
+            Create a template
+                - Type a name and description
+                - Choose Amazon Linux AMI
+                - Choose t2.micro as a Instance type
+                - Choose a key
+                - DO NOT SUBNET in launch template
+                - Create a new SEcGroup (Name it and type a description, choose VPC, add 2 inbound rules for HTTP(80) and HTTPS (443) ports and as a source choose other Sec Group that was applied to Load Balancer)
+                - Put an User data 
+                - Click on "Create Launch Template"
+
+Go Back to crreating ASG
+    - Refresh and Select just created Launch Template => Click on "Next"
+    - Choose VPC, two AZs and Subnets => Click on "Next"
+    - Choose to "Attach to an existing load balancer"
+    - Choose "Choose from your load balancer target groups" and Select target group that was applied to the relevant LB => Click "Next"
+    - For Group Size indicate Desired-2; Min-2; Max-4;
+    - Apply Automatic Scaling by chooce "Target tracking scaling policy" and change to 80% of target CPU value => Click "Next"
+    - Skip Notificatios and Tags steps, review and click "Create Auto Scaling group"
+
+
+5. Create A record of your domain name for your load balancer. 
+- Navigate to Route53 service => Hosted Zones => Select you root domain
+- Under the "Records" subsection click on "Create record"
+- Leave just root domain name uand the "Record name"
+- Select "A – Routes traffic to an IPv4 address and some AWS resources"
+- Switch an "Alias" button => Select "Alias to Application and Classic Load Balancer" => Choose the region "US East (N. Virginia)" => choose earlier created Load balancer. => Click "Create record"
