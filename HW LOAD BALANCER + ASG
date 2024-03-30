@@ -1,0 +1,55 @@
+1. Create 2 instances, hosting webservers, userdata is in our slack channel.
+
+    - Navigate to EC2 service => Instances => Launch instance 
+    - Change Region to us-east-1 (N. Virginia)
+    - Type a name of the EC2
+    - Select an AMI (Amazon Linux)
+    - Instance type - t2.micro
+    - Select a key (if applicable in this region)
+    - Open HTTP port and you can close SHH port (Since this instances will be added to Target group you can create and apply new Security group with open 80 and 443 port but source should be indicated "Security Group that will be applied to Load Balancer". THis operation needs for double security layer. This instance will receive thaffic on port 80 and 443 only from the SG of the Load Balancer.) 
+    - Add foloffing User data under the "Advanced details" section
+#!/bin/bash
+# Update the system packages
+yum update -y
+
+# Install Apache HTTP server
+yum install -y httpd
+
+# Start the Apache service
+systemctl start httpd
+
+# Enable Apache to start on boot
+systemctl enable httpd
+
+# Create a basic HTML file to be served
+echo "<html><head><title>  </title></head><body><h1> APP NUMBER 1 ===> IP OF THIS INSTANCE IS $(hostname -f)</h1></body></html>" > /var/www/html/index.html
+
+# Set permissions for the HTML file
+chmod 644 /var/www/html/index.html
+
+for the 2nd EC2 instance repeat the same steps and user other User data "... APP NUMBER 2....."
+
+
+
+
+2. Create HW Load Balancer in us-east-1
+   Create Security for Load Balancer and add two INBOUND RULES for HTTP and HTTPS ports to receive traffic from "anywhere"
+
+    - Navigate to EC2 service => Load Balancers => Create Load Balancer (LB)
+    - Choose "Application Load Balancer"
+    - Select Internet-facing scheme and IPv4 as an IP address type
+    - Pick at least two AZs and relevant subnets
+    - Apply earlier created Security Group 
+    - In the "Listeners and routing" create new Target group. 
+                
+Create New Target group (TG)
+                - Choose "Instances" as a target type
+                - Type a name of the TG
+                - Scroll down => click "Next"
+                - Pick two earlier created instances and click to "Include as pending below"
+                - click "Create target group"
+Go Back to creating LB
+    - Refresh and select just created TG
+    - Click on "Create load balancer"
+
+
