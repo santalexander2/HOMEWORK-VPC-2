@@ -87,3 +87,5 @@ Go Back to crreating ASG
 - Leave just root domain name uand the "Record name"
 - Select "A – Routes traffic to an IPv4 address and some AWS resources"
 - Switch an "Alias" button => Select "Alias to Application and Classic Load Balancer" => Choose the region "US East (N. Virginia)" => choose earlier created Load balancer. => Click "Create record"
+
+To Check the correct result, grab you Root domain name and browse them, you will the info that was paste into User data. refresh and it will change.  
